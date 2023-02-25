@@ -76,13 +76,18 @@ func MyPageHandler(c *gin.Context) {
 	})
 }
 
+func ErrorHandler(c *gin.Context) {
+	c.HTML(http.StatusOK, "error.go.tmpl", gin.H{
+		"title": "Error",
+	})
+}
+
 func AuthCheck() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		sessionFoo := sessions.DefaultMany(c, "session_foo")
 		login := sessionFoo.Get("login")
 		if login != 1 {
-			c.HTML(http.StatusUnauthorized, "error.go.tmpl", gin.H{})
-			c.Abort()
+			c.Redirect(http.StatusFound, "/error")
 		}
 	}
 }
