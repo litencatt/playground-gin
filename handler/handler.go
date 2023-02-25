@@ -16,8 +16,10 @@ func RootHandler(c *gin.Context) {
 	sessionBar.Set("value", 1)
 	sessionBar.Save()
 
+	login := sessionFoo.Get("login")
 	c.HTML(http.StatusOK, "root.go.tmpl", gin.H{
-		"title": "root",
+		"title":    "root",
+		"loggedIn": login,
 	})
 }
 
