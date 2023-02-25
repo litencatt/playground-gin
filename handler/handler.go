@@ -19,9 +19,23 @@ func RootHandler(c *gin.Context) {
 func FooHandler(c *gin.Context) {
 	session := sessions.Default(c)
 	val := session.Get("session_value")
-	v := val.(int) + 1
+	var v int
+	if val != nil {
+		v = val.(int) + 1
+	}
 	session.Set("session_value", v)
 	session.Save()
+	c.HTML(http.StatusOK, "foo.go.tmpl", gin.H{
+		"title": "foo",
+		"value": val,
+	})
+}
+
+func BarHandler(c *gin.Context) {
+	session := sessions.Default(c)
+	session.Clear()
+	session.Save()
+	val := session.Get("session_value")
 	c.HTML(http.StatusOK, "foo.go.tmpl", gin.H{
 		"title": "foo",
 		"value": val,

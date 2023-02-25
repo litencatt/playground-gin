@@ -17,6 +17,7 @@ func main() {
 	r.LoadHTMLGlob("templates/*.go.tmpl")
 	r.GET("/", handler.RootHandler)
 	r.GET("/foo", handler.FooHandler)
+	r.GET("/bar", handler.BarHandler)
 
 	r.Run(":8090")
 }
