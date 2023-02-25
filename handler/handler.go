@@ -44,3 +44,23 @@ func BarHandler(c *gin.Context) {
 		"value": val,
 	})
 }
+
+func GetLoginHandler(c *gin.Context) {
+	c.HTML(http.StatusOK, "login.go.tmpl", gin.H{})
+}
+
+func PostLoginHandler(c *gin.Context) {
+	sessionFoo := sessions.DefaultMany(c, "session_foo")
+	sessionFoo.Set("login", 1)
+	sessionFoo.Save()
+
+	c.Redirect(http.StatusFound, "/")
+}
+
+func LogoutHandler(c *gin.Context) {
+	sessionFoo := sessions.DefaultMany(c, "session_foo")
+	sessionFoo.Delete("login")
+	sessionFoo.Save()
+
+	c.Redirect(http.StatusFound, "/")
+}
