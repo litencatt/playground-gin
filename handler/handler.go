@@ -16,8 +16,10 @@ func RootHandler(c *gin.Context) {
 	sessionBar.Set("value", 1)
 	sessionBar.Save()
 
+	login := sessionFoo.Get("login")
 	c.HTML(http.StatusOK, "root.go.tmpl", gin.H{
-		"title": "root",
+		"title":    "root",
+		"loggedIn": login == 1,
 	})
 }
 
@@ -43,4 +45,49 @@ func BarHandler(c *gin.Context) {
 		"title": "bar",
 		"value": val,
 	})
+}
+
+func GetLoginHandler(c *gin.Context) {
+	c.HTML(http.StatusOK, "login.go.tmpl", gin.H{})
+}
+
+func PostLoginHandler(c *gin.Context) {
+	sessionFoo := sessions.DefaultMany(c, "session_foo")
+	sessionFoo.Set("login", 1)
+	sessionFoo.Save()
+
+	c.Redirect(http.StatusFound, "/mypage")
+}
+
+func LogoutHandler(c *gin.Context) {
+	sessionFoo := sessions.DefaultMany(c, "session_foo")
+	sessionFoo.Delete("login")
+	sessionFoo.Save()
+
+	c.Redirect(http.StatusFound, "/")
+}
+
+func MyPageHandler(c *gin.Context) {
+	sessionFoo := sessions.DefaultMany(c, "session_foo")
+	login := sessionFoo.Get("login")
+	c.HTML(http.StatusOK, "mypage.go.tmpl", gin.H{
+		"title":    "mypage",
+		"loggedIn": login == 1,
+	})
+}
+
+func ErrorHandler(c *gin.Context) {
+	c.HTML(http.StatusOK, "error.go.tmpl", gin.H{
+		"title": "Error",
+	})
+}
+
+func AuthCheck() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		sessionFoo := sessions.DefaultMany(c, "session_foo")
+		login := sessionFoo.Get("login")
+		if login != 1 {
+			c.Redirect(http.StatusFound, "/error")
+		}
+	}
 }

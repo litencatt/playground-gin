@@ -4,6 +4,11 @@
     <title>{{ .title }}</title>
 </head>
 <body>
+  {{ if .loggedIn }}
+  <a href="/logout">logout</a>
+  {{ else }}
+  <a href="/login">login</a>
+  {{ end }}
   <a href="/">root</a>
   <a href="/foo">foo</a>
   <a href="/bar">bar</a>

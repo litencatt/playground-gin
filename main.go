@@ -20,5 +20,16 @@ func main() {
 	r.GET("/foo", handler.FooHandler)
 	r.GET("/bar", handler.BarHandler)
 
+	r.GET("/login", handler.GetLoginHandler)
+	r.POST("/login", handler.PostLoginHandler)
+	r.GET("/logout", handler.LogoutHandler)
+	r.GET("/error", handler.ErrorHandler)
+
+	a := r.Group("/")
+	a.Use(handler.AuthCheck())
+	{
+		a.GET("/mypage", handler.MyPageHandler)
+	}
+
 	r.Run(":8090")
 }
