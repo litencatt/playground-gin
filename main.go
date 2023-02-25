@@ -24,7 +24,11 @@ func main() {
 	r.POST("/login", handler.PostLoginHandler)
 	r.GET("/logout", handler.LogoutHandler)
 
-	r.GET("/mypage", handler.MyPageHandler)
+	a := r.Group("/")
+	a.Use(handler.AuthCheck())
+	{
+		a.GET("/mypage", handler.MyPageHandler)
+	}
 
 	r.Run(":8090")
 }

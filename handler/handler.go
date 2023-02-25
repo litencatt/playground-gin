@@ -75,3 +75,14 @@ func MyPageHandler(c *gin.Context) {
 		"loggedIn": login == 1,
 	})
 }
+
+func AuthCheck() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		sessionFoo := sessions.DefaultMany(c, "session_foo")
+		login := sessionFoo.Get("login")
+		if login != 1 {
+			c.HTML(http.StatusUnauthorized, "error.go.tmpl", gin.H{})
+			c.Abort()
+		}
+	}
+}
