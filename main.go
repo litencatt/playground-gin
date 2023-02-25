@@ -20,5 +20,9 @@ func main() {
 	r.GET("/foo", handler.FooHandler)
 	r.GET("/bar", handler.BarHandler)
 
+	r.GET("/login", handler.GetLoginHandler)
+	r.POST("/login", handler.PostLoginHandler)
+	r.GET("/logout", handler.LogoutHandler)
+
 	r.Run(":8090")
 }
