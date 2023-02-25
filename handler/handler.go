@@ -8,23 +8,28 @@ import (
 )
 
 func RootHandler(c *gin.Context) {
-	session := sessions.Default(c)
-	session.Set("session_value", 1)
-	session.Save()
+	sessionFoo := sessions.DefaultMany(c, "session_foo")
+	sessionFoo.Set("value", 1)
+	sessionFoo.Save()
+
+	sessionBar := sessions.DefaultMany(c, "session_bar")
+	sessionBar.Set("value", 1)
+	sessionBar.Save()
+
 	c.HTML(http.StatusOK, "root.go.tmpl", gin.H{
 		"title": "root",
 	})
 }
 
 func FooHandler(c *gin.Context) {
-	session := sessions.Default(c)
-	val := session.Get("session_value")
+	sessionFoo := sessions.DefaultMany(c, "session_foo")
+	val := sessionFoo.Get("value")
 	var v int
 	if val != nil {
 		v = val.(int) + 1
 	}
-	session.Set("session_value", v)
-	session.Save()
+	sessionFoo.Set("value", v)
+	sessionFoo.Save()
 	c.HTML(http.StatusOK, "foo.go.tmpl", gin.H{
 		"title": "foo",
 		"value": val,
@@ -32,12 +37,10 @@ func FooHandler(c *gin.Context) {
 }
 
 func BarHandler(c *gin.Context) {
-	session := sessions.Default(c)
-	session.Clear()
-	session.Save()
-	val := session.Get("session_value")
-	c.HTML(http.StatusOK, "foo.go.tmpl", gin.H{
-		"title": "foo",
+	sessionBar := sessions.DefaultMany(c, "session_bar")
+	val := sessionBar.Get("value")
+	c.HTML(http.StatusOK, "bar.go.tmpl", gin.H{
+		"title": "bar",
 		"value": val,
 	})
 }
