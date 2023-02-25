@@ -10,6 +10,7 @@ func main() {
 	r := gin.Default()
 	r.LoadHTMLGlob("templates/*.go.tmpl")
 	r.GET("/", handler.RootHandler)
+	r.GET("/foo", handler.FooHandler)
 
 	r.Run(":8090")
 }
