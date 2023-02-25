@@ -12,7 +12,8 @@ func main() {
 	r := gin.Default()
 
 	store := cookie.NewStore([]byte("secret"))
-	r.Use(sessions.Sessions("sample_session", store))
+	sessionNames := []string{"session_foo", "session_bar"}
+	r.Use(sessions.SessionsMany(sessionNames, store))
 
 	r.LoadHTMLGlob("templates/*.go.tmpl")
 	r.GET("/", handler.RootHandler)
