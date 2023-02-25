@@ -19,7 +19,7 @@ func RootHandler(c *gin.Context) {
 	login := sessionFoo.Get("login")
 	c.HTML(http.StatusOK, "root.go.tmpl", gin.H{
 		"title":    "root",
-		"loggedIn": login,
+		"loggedIn": login == 1,
 	})
 }
 
