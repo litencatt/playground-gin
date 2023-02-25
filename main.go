@@ -24,5 +24,7 @@ func main() {
 	r.POST("/login", handler.PostLoginHandler)
 	r.GET("/logout", handler.LogoutHandler)
 
+	r.GET("/mypage", handler.MyPageHandler)
+
 	r.Run(":8090")
 }

@@ -56,7 +56,7 @@ func PostLoginHandler(c *gin.Context) {
 	sessionFoo.Set("login", 1)
 	sessionFoo.Save()
 
-	c.Redirect(http.StatusFound, "/")
+	c.Redirect(http.StatusFound, "/mypage")
 }
 
 func LogoutHandler(c *gin.Context) {
@@ -65,4 +65,13 @@ func LogoutHandler(c *gin.Context) {
 	sessionFoo.Save()
 
 	c.Redirect(http.StatusFound, "/")
+}
+
+func MyPageHandler(c *gin.Context) {
+	sessionFoo := sessions.DefaultMany(c, "session_foo")
+	login := sessionFoo.Get("login")
+	c.HTML(http.StatusOK, "mypage.go.tmpl", gin.H{
+		"title":    "mypage",
+		"loggedIn": login == 1,
+	})
 }
