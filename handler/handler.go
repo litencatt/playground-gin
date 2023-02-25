@@ -19,6 +19,9 @@ func RootHandler(c *gin.Context) {
 func FooHandler(c *gin.Context) {
 	session := sessions.Default(c)
 	val := session.Get("session_value")
+	v := val.(int) + 1
+	session.Set("session_value", v)
+	session.Save()
 	c.HTML(http.StatusOK, "foo.go.tmpl", gin.H{
 		"title": "foo",
 		"value": val,
