@@ -1,5 +1,5 @@
 {{ define "bar.go.tmpl" }}
-{{ template "header" }}
+{{ template "header" . }}
 <p>session value:{{ .value }}</p>
-{{ template "footer" }}
+{{ template "footer" . }}
 {{ end }}
